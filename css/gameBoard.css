@@ -1,7 +1,15 @@
 .gameBoard{
+	position: relative;
 	border: 1px solid black;
 	width: 70%;
 	height: 500px;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 20px;
+}
+
+.playerShip{
+	position: absolute;
+	top: 50%;
+	right: 50%;
 }
