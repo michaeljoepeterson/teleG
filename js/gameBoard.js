@@ -3,8 +3,8 @@ function GameBoard(gameBoardID,playerShip){
 	this.gameBoard = document.getElementById(gameBoardID);
 	this.playerShip = playerShip;
 	this.initBoardListener();
-	this.playerShip.setPosition(this.gameBoard.scrollHeight / 2,this.gameBoard.offsetWidth / 2);
-	console.log(this.gameBoard.scrollHeight,this.gameBoard.offsetWidth);
+	this.playerShip.setPosition(this.gameBoard.scrollWidth / 2, this.gameBoard.scrollHeight / 2);
+	console.log(this.gameBoard.scrollHeight,this.gameBoard.scrollWidth);
 }
 
 GameBoard.prototype.initBoardListener = function(){
@@ -18,9 +18,10 @@ GameBoard.prototype.clickBoard = function(event){
 	//adjust poition with margins 20px top margin and other margins have to get
 	console.log("target margins ",getComputedStyle(event.currentTarget).getPropertyValue("margin-left"));
 	let leftMargin = parseInt(getComputedStyle(event.currentTarget).getPropertyValue("margin-left").replace("px",""));
-	let adjustedX = event.clientX - leftMargin;
-	let adjustedY = event.clientY - 20;
+	let adjustedX = event.clientX - leftMargin - this.playerShip.playerShip.scrollWidth / 2;
+	let adjustedY = event.clientY - 20 - this.playerShip.playerShip.scrollHeight / 2;
 	console.log(adjustedX,adjustedY);
+	console.log("ship height width",this.playerShip.playerShip.scrollHeight,this.playerShip.playerShip.scrollWidth);
 	this.playerShip.setPosition(adjustedX,adjustedY);
 }
 
