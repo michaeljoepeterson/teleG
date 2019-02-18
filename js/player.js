@@ -8,6 +8,7 @@ function PlayerShip(plaerShipID){
 }
 
 PlayerShip.prototype.setPosition = function(xPosition,yPosition){
+
 	if(xPosition === undefined){
 		xPosition = false;
 	}
@@ -19,6 +20,7 @@ PlayerShip.prototype.setPosition = function(xPosition,yPosition){
 		this.playerShip.style.top = this.playerY + "px";
 	}
 	else if(xPosition && yPosition){
+		//console.log("inside player positions",xPosition,yPosition);
 		this.playerShip.style.left = xPosition + "px";
 		this.playerShip.style.top = yPosition + "px";
 	}

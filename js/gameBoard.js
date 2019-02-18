@@ -1,7 +1,9 @@
 //need a player ship class, meteor class, and collision detection class, possible a animation class?
-function GameBoard(gameBoardID,playerShip){
+//with this setup gameboard would need to be keeping trakc of the meteors as they spawn
+function GameBoard(gameBoardID,playerShip,meteors){
 	this.gameBoard = document.getElementById(gameBoardID);
 	this.playerShip = playerShip;
+	this.meteors = meteors
 	this.initBoardListener();
 	this.playerShip.setPosition(this.gameBoard.scrollWidth / 2, this.gameBoard.scrollHeight / 2);
 	console.log(this.gameBoard.scrollHeight,this.gameBoard.scrollWidth);
@@ -23,11 +25,16 @@ GameBoard.prototype.clickBoard = function(event){
 	console.log(adjustedX,adjustedY);
 	console.log("ship height width",this.playerShip.playerShip.scrollHeight,this.playerShip.playerShip.scrollWidth);
 	this.playerShip.setPosition(adjustedX,adjustedY);
+	let meteorPositions = this.meteors.spawnMeteor(this.gameBoard.scrollHeight,this.gameBoard.scrollWidth);
+	const meteorHtml = `<img id="meteor" class="meteor" src="images/meteorBrown_med3.png" style="position:absolute;left:${meteorPositions[0]}px; top:${meteorPositions[1]}px;">`;
+	this.gameBoard.insertAdjacentHTML('beforeend',meteorHtml);
+
 }
 
 function initGameBoard(){
-	let playerShip = new PlayerShip("playerShip")
-	let gameBoard = new GameBoard("gameBoard",playerShip);
+	let playerShip = new PlayerShip("playerShip");
+	let meteors = new Meteor(playerShip);
+	let gameBoard = new GameBoard("gameBoard",playerShip,meteors);
 }
 
 window.onload = initGameBoard;
