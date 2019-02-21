@@ -4,11 +4,45 @@ function Meteor(playerShip){
 	//this.boardHeight = boardHeight;
 	//this.boardWidth = boardWidth;
 	this.playerShip = playerShip;
+	this.meteorSize = this.getMeteorSize()
 	//this.gameBoard = gameBoard;
 	//this.initBoardListener();
 	//console.log(this.gameBoard);
 	//this.setPosition();
 
+}
+
+Meteor.prototype.getMeteorSize = function(){
+	const meteor = document.getElementById("hiddenMeteor");
+	let sizeArray = [meteor.scrollWidth,meteor.scrollHeight];
+	return sizeArray;
+}
+
+Meteor.prototype.adjustMeteor = function(boardHeight,boardWidth,meteor){
+	//need to take diff of height/width board/position then compare that diff with the height/width of the image then if it is less than the height/width need to subtract that diff from the position
+	let spawnX = parseInt(meteor.style.left.replace("px",""));
+	let spawnY = parseInt(meteor.style.top.replace("px",""));
+	let boardSpawndiffX = boardWidth - spawnX;
+	let boardSpawndiffY = boardHeight - spawnY;
+	let metoerHeight = this.meteorSize[1];
+	let metoerWidth = this.meteorSize[0];
+	console.log(meteor);
+	console.log("x diff",boardSpawndiffX,boardWidth);
+	if(boardSpawndiffX < metoerWidth){
+
+		let widthDiff = metoerWidth - boardSpawndiffX;
+		spawnX -= widthDiff;
+		meteor.style.left = spawnX + "px";
+		console.log("adjusted X",widthDiff);
+	}
+	if(boardSpawndiffY < metoerHeight){
+
+		let heightDiff = metoerHeight - boardSpawndiffY;
+		spawnY -= heightDiff;
+		meteor.style.top = spawnY + "px";
+		console.log("adjusted Y",heightDiff);
+	}
+	//console.log("meteor height and width ",metoerHeight,metoerWidth)
 }
 
 Meteor.prototype.spawnMeteor = function(boardHeight,boardWidth) {

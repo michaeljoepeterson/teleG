@@ -6,6 +6,7 @@ function GameBoard(gameBoardID,playerShip,meteors){
 	this.meteors = meteors
 	this.initBoardListener();
 	this.playerShip.setPosition(this.gameBoard.scrollWidth / 2, this.gameBoard.scrollHeight / 2);
+	this.meteorID = 0;
 	console.log(this.gameBoard.scrollHeight,this.gameBoard.scrollWidth);
 }
 
@@ -25,10 +26,16 @@ GameBoard.prototype.clickBoard = function(event){
 	console.log(adjustedX,adjustedY);
 	console.log("ship height width",this.playerShip.playerShip.scrollHeight,this.playerShip.playerShip.scrollWidth);
 	this.playerShip.setPosition(adjustedX,adjustedY);
-	let meteorPositions = this.meteors.spawnMeteor(this.gameBoard.scrollHeight,this.gameBoard.scrollWidth);
-	const meteorHtml = `<img id="meteor" class="meteor" src="images/meteorBrown_med3.png" style="position:absolute;left:${meteorPositions[0]}px; top:${meteorPositions[1]}px;">`;
+	let meteorPositions = this.meteors.spawnMeteor(this.gameBoard.clientHeight,this.gameBoard.clientWidth);
+	const meteorHtml = `<img id="meteor${this.meteorID}" class="meteor" src="images/meteorBrown_med3.png" style="position:absolute;left:${meteorPositions[0]}px; top:${meteorPositions[1]}px;">`;
+	
+	
 	this.gameBoard.insertAdjacentHTML('beforeend',meteorHtml);
-
+	let currentMeteor = document.getElementById("meteor" + this.meteorID);
+	
+	
+	this.meteorID += 1;
+	this.meteors.adjustMeteor(this.gameBoard.clientHeight,this.gameBoard.clientWidth,currentMeteor);
 }
 
 function initGameBoard(){

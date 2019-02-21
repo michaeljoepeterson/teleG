@@ -14,3 +14,7 @@
 	left: 50%;
 	width:5%;
 }
+
+#hiddenMeteor{
+	visibility: hidden;
+}
