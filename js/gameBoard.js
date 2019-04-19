@@ -8,6 +8,7 @@ function GameBoard(gameBoardID,playerShip,meteors){
 	this.initBoardListener();
 	this.playerShip.setPosition(this.gameBoard.scrollWidth / 2, this.gameBoard.scrollHeight / 2);
 	this.meteorID = 0;
+	this.meteorArray = [];
 	this.setMeteorSpawnTimer();
 	console.log(this.gameBoard.scrollHeight,this.gameBoard.scrollWidth);
 }
@@ -30,10 +31,40 @@ GameBoard.prototype.clickBoard = function(event){
 	this.playerShip.setPosition(adjustedX,adjustedY);
 	
 }
+//use this to check for a collision
+//check for collision by checking if both the x value and the y value plus the width and height of the meteor are within the x/y value plus height/width of the other meteor
+GameBoard.prototype.checkforCollision = function(meteor1,meteor2){
+	let collisionOccured = false;
+
+	let meteorPosition1 = meteor1.getMeteorPosition();
+	let meteorHeight1 = meteor1.meteorHeight;
+	let meteorWidth1 = meteor1.meteorHeight;
+
+	let meteorPosition2 = meteor2.getMeteorPosition();
+	let meteorHeight2 = meteor2.meteorHeight;
+	let meteorWidth2 = meteor2.meteorHeight;
+
+	return collisionOccured;
+}
+
+GameBoard.prototype.collisionHandler = function(){
+	console.log("meteor array ",this.meteorArray);
+	//compare each meteor to each other meteor
+	for(let i = 0;i < this.meteorArray.length;i++){
+		for(let k = 0;k < this.meteorArray.length;k++){
+			if(i === k){
+				continue;
+			}
+			else{
+				this.checkforCollision(this.meteorArray[i],this.meteorArray[k]);
+			}
+		}
+	}
+}
 
 GameBoard.prototype.spawnMeteor = function(){
 	console.log("spawn meteor ",this.meteorID);
-	if(this.meteorID <= 10){
+	if(this.meteorID < 10){
 
 		let meteorPositions = this.meteors.spawnMeteor(this.gameBoard.clientHeight,this.gameBoard.clientWidth);
 		const meteorHtml = `<img id="meteor${this.meteorID}" class="meteor" src="images/meteorBrown_med3.png" style="position:absolute;left:${meteorPositions[0]}px; top:${meteorPositions[1]}px;">`;
@@ -45,6 +76,8 @@ GameBoard.prototype.spawnMeteor = function(){
 		
 		this.meteorID += 1;
 		this.meteors.adjustMeteor(this.gameBoard.clientHeight,this.gameBoard.clientWidth,currentMeteor);
+		let animator = new Animator(currentMeteor,this.gameBoard.clientHeight,this.gameBoard.clientWidth);
+		this.meteorArray.push(animator);
 	}
 	else{
 		clearInterval(this.meteorTimer);
@@ -54,6 +87,7 @@ GameBoard.prototype.spawnMeteor = function(){
 
 GameBoard.prototype.setMeteorSpawnTimer = function(){
 	this.meteorTimer = setInterval(this.spawnMeteor.bind(this),5000);
+	this.collisionInterval = setInterval(this.collisionHandler.bind(this),500);
 }
 
 function initGameBoard(){

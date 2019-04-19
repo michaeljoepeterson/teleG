@@ -44,6 +44,10 @@ Meteor.prototype.adjustMeteor = function(boardHeight,boardWidth,meteor){
 		console.log("adjusted Y",heightDiff);
 	}
 	//console.log("meteor height and width ",metoerHeight,metoerWidth)
+	
+	setTimeout(function(){
+		meteor.style.transition = "all 2s";
+	},500);
 }
 
 Meteor.prototype.spawnMeteor = function(boardHeight,boardWidth) {
@@ -76,4 +80,8 @@ Meteor.prototype.spawnMeteor = function(boardHeight,boardWidth) {
 
 Meteor.prototype.randomPosition = function(min,max){
 	return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+//hitbox rectangle around meteor
+Meteor.prototype.getHitBox = function(){
+	return this.meteorSize[0] * this.meteorSize[1];
 }
