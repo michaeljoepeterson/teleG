@@ -22,6 +22,7 @@ Meteor.prototype.adjustMeteor = function(boardHeight,boardWidth,meteor){
 	//need to take diff of height/width board/position then compare that diff with the height/width of the image then if it is less than the height/width need to subtract that diff from the position
 	let spawnX = parseInt(meteor.style.left.replace("px",""));
 	let spawnY = parseInt(meteor.style.top.replace("px",""));
+	//get the top left point to the edge of the box
 	let boardSpawndiffX = boardWidth - spawnX;
 	let boardSpawndiffY = boardHeight - spawnY;
 	let metoerHeight = this.meteorSize[1];
@@ -29,7 +30,7 @@ Meteor.prototype.adjustMeteor = function(boardHeight,boardWidth,meteor){
 	console.log(meteor);
 	console.log("x diff",boardSpawndiffX,boardWidth);
 	if(boardSpawndiffX < metoerWidth){
-
+		//get the image within the box
 		let widthDiff = metoerWidth - boardSpawndiffX;
 		spawnX -= widthDiff;
 		meteor.style.left = spawnX + "px";
@@ -53,7 +54,7 @@ Meteor.prototype.spawnMeteor = function(boardHeight,boardWidth) {
 	//buffer around player ship that things can't spawn
 	const buffer = 5;
 	console.log("meteor player position",playerX,playerY,playerHeight,playerWidth);
-	const playerAdjustedX = playerX + playerHeight + buffer;
+	const playerAdjustedX = playerX + playerWidth + buffer;
 	const playerAdjustedY = playerY + playerHeight + buffer;
 	let spawnY = this.randomPosition(0,boardHeight);
 	let spawnX = this.randomPosition(0,boardWidth);

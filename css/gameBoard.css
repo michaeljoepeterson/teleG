@@ -18,3 +18,7 @@
 #hiddenMeteor{
 	visibility: hidden;
 }
+
+.meteor{
+	transition: all 2s;
+}
