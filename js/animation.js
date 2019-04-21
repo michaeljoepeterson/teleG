@@ -9,8 +9,11 @@ function Animator(meteor,boardHeight,boardWidth){
 //use this function to get the meteor position in relation to wall or meteors
 Animator.prototype.getMeteorPosition = function() {
 	// body...
-	return [parseInt(this.meteor.style.left.replace("px","")),parseInt(this.meteor.style.top.replace("px",""))];
+	let computedStyle = getComputedStyle(this.meteor);
+	return [parseInt(computedStyle.left.replace("px","")),parseInt(computedStyle.top.replace("px",""))];
 };
+
+//Animator.prototype.checkCo
 //use this function to set the new position of the meteor and css will handle animation
 Animator.prototype.setMeteorPosition = function() {
 	// body...

@@ -27,26 +27,26 @@ Meteor.prototype.adjustMeteor = function(boardHeight,boardWidth,meteor){
 	let boardSpawndiffY = boardHeight - spawnY;
 	let metoerHeight = this.meteorSize[1];
 	let metoerWidth = this.meteorSize[0];
-	console.log(meteor);
-	console.log("x diff",boardSpawndiffX,boardWidth);
+	//console.log(meteor);
+	//console.log("x diff",boardSpawndiffX,boardWidth);
 	if(boardSpawndiffX < metoerWidth){
 		//get the image within the box
 		let widthDiff = metoerWidth - boardSpawndiffX;
 		spawnX -= widthDiff;
 		meteor.style.left = spawnX + "px";
-		console.log("adjusted X",widthDiff);
+		//console.log("adjusted X",widthDiff);
 	}
 	if(boardSpawndiffY < metoerHeight){
 
 		let heightDiff = metoerHeight - boardSpawndiffY;
 		spawnY -= heightDiff;
 		meteor.style.top = spawnY + "px";
-		console.log("adjusted Y",heightDiff);
+		//console.log("adjusted Y",heightDiff);
 	}
 	//console.log("meteor height and width ",metoerHeight,metoerWidth)
 	
 	setTimeout(function(){
-		meteor.style.transition = "all 2s";
+		meteor.style.transition = "all 3s";
 	},500);
 }
 

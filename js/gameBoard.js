@@ -20,14 +20,14 @@ GameBoard.prototype.initBoardListener = function(){
 }
 
 GameBoard.prototype.clickBoard = function(event){
-	console.log("test click");
+	//console.log("test click");
 	//adjust poition with margins 20px top margin and other margins have to get
-	console.log("target margins ",getComputedStyle(event.currentTarget).getPropertyValue("margin-left"));
+	//console.log("target margins ",getComputedStyle(event.currentTarget).getPropertyValue("margin-left"));
 	let leftMargin = parseInt(getComputedStyle(event.currentTarget).getPropertyValue("margin-left").replace("px",""));
 	let adjustedX = event.clientX - leftMargin - this.playerShip.playerShip.scrollWidth / 2;
 	let adjustedY = event.clientY - 20 - this.playerShip.playerShip.scrollHeight / 2;
-	console.log(adjustedX,adjustedY);
-	console.log("ship height width",this.playerShip.playerShip.scrollHeight,this.playerShip.playerShip.scrollWidth);
+	//console.log(adjustedX,adjustedY);
+	//console.log("ship height width",this.playerShip.playerShip.scrollHeight,this.playerShip.playerShip.scrollWidth);
 	this.playerShip.setPosition(adjustedX,adjustedY);
 	
 }
@@ -37,33 +37,44 @@ GameBoard.prototype.checkforCollision = function(meteor1,meteor2){
 	let collisionOccured = false;
 
 	let meteorPosition1 = meteor1.getMeteorPosition();
+	//dont need height/width or both cus it is the same for all meteors
 	let meteorHeight1 = meteor1.meteorHeight;
 	let meteorWidth1 = meteor1.meteorHeight;
 
 	let meteorPosition2 = meteor2.getMeteorPosition();
-	let meteorHeight2 = meteor2.meteorHeight;
-	let meteorWidth2 = meteor2.meteorHeight;
+	//let meteorHeight2 = meteor2.meteorHeight;
+	//let meteorWidth2 = meteor2.meteorHeight;
+	//if position1 - poisition2 < the width/height then that means a collision has occured
+	let xPositionDiff = Math.abs(meteorPosition1[0] - meteorPosition2[0]);
+	let yPositionDiff = Math.abs(meteorPosition1[1] - meteorPosition2[1]);
 
 	return collisionOccured;
 }
 
 GameBoard.prototype.collisionHandler = function(){
-	console.log("meteor array ",this.meteorArray);
-	//compare each meteor to each other meteor
-	for(let i = 0;i < this.meteorArray.length;i++){
-		for(let k = 0;k < this.meteorArray.length;k++){
-			if(i === k){
-				continue;
-			}
-			else{
-				this.checkforCollision(this.meteorArray[i],this.meteorArray[k]);
+	//console.log("meteor array ",this.meteorArray);
+	try{
+		//console.log("meteor array ",this.meteorArray[0].getMeteorPosition());
+		//compare each meteor to each other meteor
+		for(let i = 0;i < this.meteorArray.length;i++){
+			for(let k = 0;k < this.meteorArray.length;k++){
+				if(k <= i){
+					continue;
+				}
+				else{
+					this.checkforCollision(this.meteorArray[i],this.meteorArray[k]);
+				}
 			}
 		}
 	}
+	catch(err){
+		console.log("error in collosion",err);
+	}
+	
 }
 
 GameBoard.prototype.spawnMeteor = function(){
-	console.log("spawn meteor ",this.meteorID);
+	//console.log("spawn meteor ",this.meteorID);
 	if(this.meteorID < 10){
 
 		let meteorPositions = this.meteors.spawnMeteor(this.gameBoard.clientHeight,this.gameBoard.clientWidth);
@@ -74,10 +85,17 @@ GameBoard.prototype.spawnMeteor = function(){
 		let currentMeteor = document.getElementById("meteor" + this.meteorID);
 		
 		
-		this.meteorID += 1;
+		
 		this.meteors.adjustMeteor(this.gameBoard.clientHeight,this.gameBoard.clientWidth,currentMeteor);
 		let animator = new Animator(currentMeteor,this.gameBoard.clientHeight,this.gameBoard.clientWidth);
 		this.meteorArray.push(animator);
+		//check collision when it spawns? between 1 and 9
+		console.log(this.meteorID,this.meteorArray);
+		if(this.meteorID > 0 && this.meteorID < 10){
+			
+			this.checkforCollision(this.meteorArray[this.meteorID - 1],this.meteorArray[this.meteorID]);
+		}
+		this.meteorID += 1;
 	}
 	else{
 		clearInterval(this.meteorTimer);
